@@ -107,18 +107,24 @@ public class CrudCoderEntity {
     }
 
     @Action(name = "删除")
-    public void delete() {
-        System.out.println("删除了名为 " + name + " 的对象");
+    public String delete() {
+        String x = "删除了名为 " + name + " 的对象";
+        System.out.println(x);
+        return x;
     }
 
     @Action(name = "更新")
-    public void update() {
-        System.out.println("更新了名为 " + name + " 的对象");
+    public String update() {
+        String x = "更新了名为 " + name + " 的对象";
+        System.out.println(x);
+        return x;
     }
 
     @Action(name = "读取")
-    public void read(String name) {
-        System.out.println("读取了名为 " + name + " 的对象");
+    public String read(String name) {
+        String x = "读取了名为 " + name + " 的对象";
+        System.out.println(x);
+        return x;
     }
 
 }

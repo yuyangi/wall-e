@@ -1,7 +1,8 @@
-package show.me.the.code.compiler;
+package show.me.the.code.codable.compiler;
 
 import net.openhft.compiler.CachedCompiler;
 import net.openhft.compiler.CompilerUtils;
+import show.me.the.code.codable.Utils;
 
 import java.io.File;
 
@@ -18,27 +19,24 @@ public class NLCompiler implements Compiler {
             new CachedCompiler(new File("src/test/java"), new File("target/classes")) :
             CompilerUtils.CACHED_COMPILER;
 
-    // 单例模式
-    private NLCompiler() {
-
-    }
-
-    // 获取单例
-    public static NLCompiler getInstance() {
-        return INSTANCE;
-    }
-
     @Override
+    public Class<?>[] compile(String name, String nl) {
+        String className = Utils.toClassName(name);
+        return new Class[]{compile2Class(className, nl)};
+    }
+
     public String compile2Code(String nl) {
         return null;
     }
 
-    @Override
-    public Class<?> compile2Class(String sourceCode) {
-        return null;
+    public Class<?> compile2Class(String name, String sourceCode) {
+        try {
+            return JCC.loadFromJava(this.getClass().getClassLoader(), name, sourceCode);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Generate " + name + " code error, class not generate or cannot loaded.", e);
+        }
     }
 
-    @Override
     public File compile2File(String sourceCode) {
         return null;
     }

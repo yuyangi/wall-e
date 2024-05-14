@@ -45,8 +45,10 @@ public class LogicRobotEntity {
     }
 
     @Action(name = "如果", code = "if_func", desc = "如果函数")
-    public void ifFunc(String condition, String tureValue, String falseValue) {
-        System.out.println("执行如果函数，如果条件为真则：" + tureValue + "为假则：" + falseValue);
+    public String ifFunc(String condition, String tureValue, String falseValue) {
+        String x = "执行如果函数，如果条件为真则：" + tureValue + "为假则：" + falseValue;
+        System.out.println(x);
+        return x;
     }
 
 }

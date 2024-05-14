@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.PropertySource;
-import show.me.the.code.meta.config.CodeConfig;
+import show.me.the.code.config.CodeConfig;
 import show.me.the.code.meta.model.Entity;
 
 import java.util.Map;

@@ -15,9 +15,9 @@ import java.util.List;
 
 @Component
 @Configuration
-public class DefaultSegment implements Segmentor {
+public class AnsjSegmentor implements Segmentor {
 
-    @Value("${nlp.segment.analysis:ToAnalysis}")
+    @Value("${nlp.segment.ansj.analysis:ToAnalysis}")
     private String analysisType = null;
 
     public String[] segment(String content) {

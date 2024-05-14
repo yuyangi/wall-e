@@ -1,31 +1,26 @@
 package show.me.the.code.codable;
 
-import java.util.*;
+import show.me.the.code.codable.compiler.Compiler;
+import show.me.the.code.codable.exec.Executor;
+import show.me.the.code.codable.storage.Storager;
 
-public class Codability {
+public interface Codability {
 
-    //单例模式
-    private static final Codability instance = new Codability();
+    void init(Compiler compiler, Executor executor, Storager storager);
 
-    private final Map<String, Object> codified = new HashMap<>();
+    void learn(String name, Object codable);
 
-    private Codability() {
-    }
+    void learn(Codable codable);
 
-    public static Codability getInstance() {
-        return instance;
-    }
+    void generate(String title, String requirement);
 
-    public void registerCodified(String name, Object codable) {
-        codified.put(name, codable);
-    }
+    String execute(String command);
 
-    public Object getCodified(String name) {
-        return codified.get(name);
-    }
+    String[] document(int type);
 
-    public String exec(String command) {
+    public static final int DOC_TYPE_STANDARD = 0;
+    public static final int DOC_TYPE_NATURE = 1;
+    public static final int DOC_TYPE_FORMAT = 2;
+    public static final int DOC_TYPE_USER_DEFINE = -1;
 
-        return "exec " + command + " success";
-    }
 }
