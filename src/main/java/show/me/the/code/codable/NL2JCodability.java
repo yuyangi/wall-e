@@ -1,11 +1,9 @@
 package show.me.the.code.codable;
 
-import org.springframework.stereotype.Component;
 import show.me.the.code.codable.compiler.Compiler;
 import show.me.the.code.codable.exec.Executor;
 import show.me.the.code.codable.storage.Storager;
 
-@Component
 public class NL2JCodability implements Codability {
 
     private Compiler compiler;
@@ -13,6 +11,11 @@ public class NL2JCodability implements Codability {
     private Executor executor;
 
     private Storager storager;
+
+    public NL2JCodability(Compiler compiler, Executor executor, Storager storager) {
+        super();
+        init(compiler, executor, storager);
+    }
 
     @Override
     public void init(Compiler compiler, Executor executor, Storager storager) {

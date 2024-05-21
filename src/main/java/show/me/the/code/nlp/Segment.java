@@ -2,7 +2,7 @@ package show.me.the.code.nlp;
 
 import java.util.List;
 
-public class WordSeg {
+public class Segment {
 
     private String word;
     private long frequency;
@@ -33,8 +33,8 @@ public class WordSeg {
         this.partOfSpeech = partOfSpeech;
     }
 
-    public static WordSeg of(String segStr) {
-        WordSeg seg = new WordSeg();
+    public static Segment of(String segStr) {
+        Segment seg = new Segment();
         String[] wordParts = segStr.split("/");
         if (wordParts.length > 1) {
             seg.setWord(wordParts[0]);
@@ -48,9 +48,9 @@ public class WordSeg {
         return seg;
     }
 
-    public static String[] toWords(List<WordSeg> segs) {
+    public static String[] toWords(List<Segment> segs) {
         if (segs != null) {
-            return segs.stream().map(WordSeg::getWord).toArray(String[]::new);
+            return segs.stream().map(Segment::getWord).toArray(String[]::new);
         }
         return null;
     }

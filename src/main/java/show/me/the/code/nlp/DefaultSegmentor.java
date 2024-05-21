@@ -2,7 +2,12 @@ package show.me.the.code.nlp;
 
 public class DefaultSegmentor implements Segmentor {
     @Override
-    public String[] segment(String content) {
+    public Segment[] segment(String content) {
+        return new Segment[0];
+    }
+
+    @Override
+    public String[] toWords(String content) {
         return new String[0];
     }
 

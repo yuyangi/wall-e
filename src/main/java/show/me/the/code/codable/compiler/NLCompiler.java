@@ -13,8 +13,6 @@ import java.io.File;
  */
 public class NLCompiler implements Compiler {
 
-    public static final NLCompiler INSTANCE = new NLCompiler();
-
     static final CachedCompiler JCC = CompilerUtils.DEBUGGING ?
             new CachedCompiler(new File("src/test/java"), new File("target/classes")) :
             CompilerUtils.CACHED_COMPILER;

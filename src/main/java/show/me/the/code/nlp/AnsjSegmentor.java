@@ -20,15 +20,20 @@ public class AnsjSegmentor implements Segmentor {
     @Value("${nlp.segment.ansj.analysis:ToAnalysis}")
     private String analysisType = null;
 
-    public String[] segment(String content) {
-        return WordSeg.toWords(segment2Obj(content));
+    public Segment[] segment(String content) {
+        return segment2Obj(content).toArray(new Segment[0]);
     }
 
-    public List<WordSeg> segment2Obj(String content) {
+    @Override
+    public String[] toWords(String content) {
+        return Segment.toWords(segment2Obj(content));
+    }
+
+    public List<Segment> segment2Obj(String content) {
         Result result = parse(content);
-        List<WordSeg> wordSegs = Lists.newArrayList();
+        List<Segment> wordSegs = Lists.newArrayList();
         if (result != null && result.getTerms() != null) {
-            result.getTerms().forEach(term -> wordSegs.add(WordSeg.of(term.toString())));
+            result.getTerms().forEach(term -> wordSegs.add(Segment.of(term.toString())));
         }
         return wordSegs;
     }
