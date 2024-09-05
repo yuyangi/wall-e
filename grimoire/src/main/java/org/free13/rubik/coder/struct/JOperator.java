@@ -3,48 +3,79 @@ package org.free13.rubik.coder.struct;
 /**
  * @author free13 Copyright (c) 2024.
  */
-public enum JOperator {
-    // 算术运算符
-    ADDITION("+", 2), SUBTRACTION("-", 2), MULTIPLICATION("*", 2), DIVISION("/", 2), MODULUS("%", 2),
+public enum JOperator implements RCode {
+    // 算术运算
+    ADD("+", 2, "{0} + {1}"),
+    SUBTRACT("-", 2, "{0} - {1}"),
+    MULTIPLY("*", 2, "{0} * {1}"),
+    DIVIDE("/", 2, "{0} / {1}"),
+    REMAINDER("%", 2, "{0} % {1}"),
 
-    // 比较运算符
-    EQUALS("==", 2), NOT_EQUALS("!=", 2), LESS_THAN("<", 2), GREATER_THAN(">", 2), LESS_THAN_OR_EQUAL("<=", 2),
-    GREATER_THAN_OR_EQUAL(">=", 2),
+    // 赋值运算
+    ASSIGN("=", 2, "{0} = {1}"),
+    ADD_ASSIGN("+=", 2, "{0} += {1}"),
+    SUBTRACT_ASSIGN("-=", 2, "{0} -= {1}"),
+    MULTIPLY_ASSIGN("*=", 2, "{0} *= {1}"),
+    DIVIDE_ASSIGN("/=", 2, "{0} /= {1}"),
+    REMAINDER_ASSIGN("%=", 2, "{0} %= {1}"),
 
-    // 逻辑运算符
-    LOGICAL_AND("&&", 2), LOGICAL_OR("||", 2), LOGICAL_NOT("!", 1),
+    // 比较运算
+    EQUALS("==", 2, "{0} == {1}"),
+    NOT_EQUALS("!=", 2, "{0} != {1}"),
+    GREATER_THAN(">", 2, "{0} > {1}"),
+    LESS_THAN("<", 2, "{0} < {1}"),
+    GREATER_THAN_OR_EQUAL(">=", 2, "{0} >= {1}"),
+    LESS_THAN_OR_EQUAL("<=", 2, "{0} <= {1}"),
 
-    // 位运算符
-    BITWISE_COMPLEMENT("~", 1), BITWISE_AND("&", 2), BITWISE_OR("|", 2), BITWISE_XOR("^", 2), LEFT_SHIFT("<<", 2),
-    SIGNED_RIGHT_SHIFT(">>", 2), UNSIGNED_RIGHT_SHIFT(">>>", 2),
+    // 逻辑运算
+    LOGICAL_AND("&&", 2, "{0} && {1}"),
+    LOGICAL_OR("||", 2, "{0} || {1}"),
+    LOGICAL_NOT("!", 1, "!{0}"),
 
-    // 赋值运算符
-    ASSIGNMENT("=", 2), ADD_ASSIGN("+=", 2), SUBTRACT_ASSIGN("-=", 2), MULTIPLY_ASSIGN("*=", 2), DIVIDE_ASSIGN("/=", 2),
-    REMAINDER_ASSIGN("%=", 2), BITWISE_AND_ASSIGN("&=", 2), BITWISE_OR_ASSIGN("|=", 2), BITWISE_XOR_ASSIGN("^=", 2),
-    LEFT_SHIFT_ASSIGN("<<=", 2), SIGNED_RIGHT_SHIFT_ASSIGN(">>=", 2), UNSIGNED_RIGHT_SHIFT_ASSIGN(">>>=", 2),
+    // 位运算
+    BITWISE_AND("&", 2, "{0} & {1}"),
+    BITWISE_OR("|", 2, "{0} | {1}"),
+    BITWISE_XOR("^", 2, "{0} ^ {1}"),
+    LEFT_SHIFT("<<", 2, "{0} << {1}"),
+    RIGHT_SHIFT(">>", 2, "{0} >> {1}"),
+    UNSIGNED_RIGHT_SHIFT(">>>", 2, "{0} >>> {1}"),
 
-    // 条件运算符
-    TERNARY_CONDITIONAL("? :", 3),
+    // 条件运算 (三元运算符)
+    CONDITIONAL("?", 3, "{0} ? {1} : {2}"),
+
+    // 实例运算
+    INSTANCEOF("instanceof", 2, "{0} instanceof {1}"),
+
+    // 空合并运算 (Java 9 开始支持)
+    NULL_COALESCING("??", 2, "{0} ?? {1}"),
 
     // 特殊运算符
-    INSTANCEOF("instanceof", 2), NEW_("new", 1), // "new" 关键字后面可以跟多个参数，但在这里我们假设至少一个操作数（类型）
-    DOT(".", 2), ARRAY_ACCESS("[]", 2), METHOD_INVOCATION("()", 1), // 方法调用至少需要一个操作数（方法名），但可以有任意数量的参数
+    NEW_("new", 1, "new {0}()"),
+    DOT(".", 2, "{0}.{1}"),
+    ARRAY_ACCESS("[]", 2, "{0}[{1}]"),
+    // TODO 设计一下格式 体现参数的数量
+    METHOD_INVOCATION("()", 1, "{0}()"),
 
-    // 逗号运算符
-    COMMA(",", 2),
+    // 逗号运算符???
+    //COMMA(",", 2),
 
     // 增量和减量运算符
-    PREFIX_INCREMENT("++", 1), PREFIX_DECREMENT("--", 1), POSTFIX_INCREMENT("++", 1), POSTFIX_DECREMENT("--", 1),
+    PREFIX_INCREMENT("++", 1, "++{0}"),
+    PREFIX_DECREMENT("--", 1, "--{0}"),
+    POSTFIX_INCREMENT("++", 1, "{0}++"),
+    POSTFIX_DECREMENT("--", 1, "{0}--"),
 
     // 显式类型转换
-    TYPE_CAST("(type)", 1);
+    TYPE_CAST("(type)", 2, "({0}){1}");
 
     private final String symbol;
     private final int operandCount;
+    private final String format;
 
-    JOperator(String symbol, int operandCount) {
+    JOperator(String symbol, int operandCount, String format) {
         this.symbol = symbol;
         this.operandCount = operandCount;
+        this.format = format;
     }
 
     public String getSymbol() {
@@ -54,4 +85,31 @@ public enum JOperator {
     public int getOperandCount() {
         return operandCount;
     }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public String format(Object[] params) {
+        return String.format(this.getFormat(), params);
+    }
+
+    @Override
+    public String simpleName() {
+        return symbol;
+    }
+
+    @Override
+    public String toCode(String... params) {
+        if (params != null && params.length > 0) {
+            return format(params);
+        }
+        return symbol;
+    }
+
+    @Override
+    public CodeState codeState() {
+        return CodeState.FRAGMENT;
+    }
+
 }

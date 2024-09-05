@@ -7,8 +7,8 @@ import com.alibaba.druid.sql.ast.statement.SQLCreateTableStatement;
 import com.alibaba.druid.sql.ast.statement.SQLTableElement;
 import com.alibaba.druid.sql.parser.SQLParserUtils;
 import com.alibaba.druid.sql.parser.SQLStatementParser;
-import org.free13.rubik.meta.data.RDataEntity;
-import org.free13.rubik.meta.data.RDataField;
+import org.free13.rubik.meta.REntity;
+import org.free13.rubik.meta.RField;
 
 import java.util.List;
 
@@ -56,8 +56,8 @@ public class RSQL2JavaCoder implements RCoder<String> {
         entityCode.append("import javax.persistence.*;\n");
         entityCode.append("import java.util.Date;\n");
         entityCode.append("import java.math.BigDecimal;\n\n");
-        entityCode.append("import ").append(RDataField.class.getPackage()).append(";\n");
-        entityCode.append("import ").append(RDataEntity.class.getPackage()).append(";\n");
+        entityCode.append("import ").append(RField.class.getPackage()).append(";\n");
+        entityCode.append("import ").append(REntity.class.getPackage()).append(";\n");
         entityCode.append("@RDataEntity(name = \"").append(name.getSimpleName()).append("\")\n");
         entityCode.append("public class ").append(className).append(" {\n\n");
 

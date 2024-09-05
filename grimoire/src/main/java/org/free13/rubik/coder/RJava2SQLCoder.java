@@ -1,7 +1,7 @@
 package org.free13.rubik.coder;
 
-import org.free13.rubik.meta.data.RDataEntity;
-import org.free13.rubik.meta.data.RDataField;
+import org.free13.rubik.meta.REntity;
+import org.free13.rubik.meta.RField;
 
 import java.lang.reflect.Field;
 
@@ -26,17 +26,17 @@ public class RJava2SQLCoder implements RCoder<Class<?>> {
     }
 
     public static String generateCreateTableStatement(Class<?> clazz) {
-        if (!clazz.isAnnotationPresent(RDataEntity.class)) {
+        if (!clazz.isAnnotationPresent(REntity.class)) {
             return "";
         }
-        RDataEntity entity = clazz.getAnnotation(RDataEntity.class);
+        REntity entity = clazz.getAnnotation(REntity.class);
         StringBuilder sqlBuilder = new StringBuilder();
         sqlBuilder.append("CREATE TABLE IF NOT EXISTS ").append(entity.tableName()).append(" (\n");
 
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
-            if (field.isAnnotationPresent(RDataField.class)) {
-                RDataField rDataField = field.getAnnotation(RDataField.class);
+            if (field.isAnnotationPresent(RField.class)) {
+                RField rDataField = field.getAnnotation(RField.class);
                 if (rDataField != null) {
                     sqlBuilder.append("`").append(rDataField.name().isEmpty() ? field.getName() : rDataField.name())
                             .append("` ").append(rDataField.type().isEmpty() ? "VARCHAR(255)" : rDataField.type());

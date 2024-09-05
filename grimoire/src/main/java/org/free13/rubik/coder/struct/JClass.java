@@ -1,6 +1,7 @@
 package org.free13.rubik.coder.struct;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.free13.rubik.coder.struct.JKeyword.*;
 import static org.free13.rubik.coder.struct.JType.INTEND;
@@ -9,45 +10,44 @@ import static org.free13.rubik.coder.struct.JType.INTEND;
  * @author free13
  * Copyright (c) 2024.
  */
-public class JClass implements JCode {
+public class JClass implements RCode {
 
-    private JCode packages;
-    private List<JCode> imports;
-    private List<JCode> defines;
-    private List<JCode> methods;
+    private RCode packages;
+    private List<RCode> imports;
+    private RCode body;
     private String className;
     private String comment;
-    private String modifier = PUBLIC.getKeyword();
 
     @Override
-    public String toCode() {
-        StringBuffer sb = new StringBuffer();
+    public String toCode(String... params) {
+        StringBuilder sb = new StringBuilder();
         if (packages != null) {
-            sb.append(packages.toCode()).append("\n");
-            sb.append("\n");
+            sb.append(packages.toCode()).append(WRAP);
         }
         if (imports != null) {
-            for (JCode jCode : imports) {
-                sb.append(jCode.toCode()).append("\n");
-            }
-            sb.append("\n");
+            sb.append(imports.stream().map(RCode::toCode).collect(Collectors.joining(JKeyword.WRAP.getKeyword())));
         }
         // class begin
-        sb.append(modifier).append(SPACE).append(CLASS).append(SPACE).append(className).append(SPACE).append(LEFT_BRACKETS).append(WRAP);
-
-        if (defines != null) {
-            for (JCode jCode : defines) {
-                sb.append(INTEND).append(jCode.toCode()).append("\n");
-            }
-            sb.append("\n");
-        }
-        if (methods != null) {
-            for (JCode jCode : methods) {
-                sb.append(INTEND).append(jCode.toCode()).append("\n");
-            }
+        if (body != null) {
+            sb.append(INTEND).append(body.toCode()).append(WRAP);
         }
         // class end
         sb.append(RIGHT_BRACKETS);
-        return "";
+        return sb.toString();
+    }
+
+    @Override
+    public CodeState codeState() {
+        return CodeState.COMPLETE;
+    }
+
+    @Override
+    public String name() {
+        return className;
+    }
+
+    @Override
+    public String simpleName() {
+        return packages.name() + "." + className;
     }
 }
