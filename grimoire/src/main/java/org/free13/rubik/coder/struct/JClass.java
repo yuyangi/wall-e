@@ -21,19 +21,21 @@ public class JClass implements RCode {
     @Override
     public String toCode(String... params) {
         StringBuilder sb = new StringBuilder();
+        JMultiLine.Builder builder = JMultiLine.builder();
         if (packages != null) {
-            sb.append(packages.toCode()).append(WRAP);
+            builder.content(packages).content(WRAP);
         }
         if (imports != null) {
-            sb.append(imports.stream().map(RCode::toCode).collect(Collectors.joining(JKeyword.WRAP.getKeyword())));
+            builder.contents(imports);
+            imports.forEach(imp -> builder.content(imp).content(WRAP));
         }
         // class begin
         if (body != null) {
-            sb.append(INTEND).append(body.toCode()).append(WRAP);
+            builder.content(INDENT);
+            builder.content(body);
+            builder.content(WRAP);
         }
-        // class end
-        sb.append(RIGHT_BRACKETS);
-        return sb.toString();
+        return builder.build().toCode(params);
     }
 
     @Override
@@ -43,11 +45,11 @@ public class JClass implements RCode {
 
     @Override
     public String name() {
-        return className;
+        return packages.name() + "." + className;
     }
 
     @Override
     public String simpleName() {
-        return packages.name() + "." + className;
+        return className;
     }
 }

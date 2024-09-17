@@ -52,6 +52,10 @@ public class JLine implements RCode {
         this.name = builder.name;
     }
 
+    public JLine() {
+
+    }
+
     public static Builder builder() {
         return new Builder();
     }
