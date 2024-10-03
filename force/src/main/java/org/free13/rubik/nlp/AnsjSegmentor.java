@@ -47,13 +47,14 @@ public class AnsjSegmentor implements Segmentor {
     }
 
     private Result parse(String content) {
-        return switch (analysisType) {
-            case "DicAnalysis" -> DicAnalysis.parse(content);
-            case "IndexAnalysis" -> IndexAnalysis.parse(content);
-            case "NlpAnalysis" -> NlpAnalysis.parse(content);
-            case "BaseAnalysis" -> BaseAnalysis.parse(content);
-            default -> ToAnalysis.parse(content);
-        };
+//        return switch (analysisType) {
+//            case "DicAnalysis" -> DicAnalysis.parse(content);
+//            case "IndexAnalysis" -> IndexAnalysis.parse(content);
+//            case "NlpAnalysis" -> NlpAnalysis.parse(content);
+//            case "BaseAnalysis" -> BaseAnalysis.parse(content);
+//            default -> ToAnalysis.parse(content);
+//        };
+        return null;
     }
 
 }
