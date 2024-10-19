@@ -7,12 +7,12 @@ import java.lang.annotation.*;
  * Copyright (c) 2024.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
+@Target({ElementType.LOCAL_VARIABLE})
 @Inherited
-public @interface RAction {
+public @interface RDesc {
+    String value();
 
-    String name() default ""; // 字段名称
+    String desc() default "";
 
-    String[] alias() default {};
-
+    String[] details() default {};
 }

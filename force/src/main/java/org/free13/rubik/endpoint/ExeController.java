@@ -1,10 +1,14 @@
 package org.free13.rubik.endpoint;
 
 
-import org.free13.rubik.codable.Codability;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/*
+ *
+ * @author free13
+ * Copyright (c) 2024.
+ */
 @RestController
 @RequestMapping(value = "/exec")
 public class ExeController {

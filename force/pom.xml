@@ -68,5 +68,15 @@
             <artifactId>lucene-memory</artifactId>
             <version>9.10.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.free13</groupId>
+            <artifactId>rubik</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.openhft</groupId>
+            <artifactId>compiler</artifactId>
+            <version>2.25ea2</version>
+        </dependency>
     </dependencies>
 </project>

@@ -26,12 +26,12 @@ public class Application {
 	}
 
 	private static void testConfig() {
-		ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(CodeConfig.class);
-		Map<String, Object> beansWithAnnotation = context.getBeansWithAnnotation(Entity.class);
-		for (String beanDefinitionName : beansWithAnnotation.keySet()) {
-			Object bean = context.getBean(beanDefinitionName);
-			System.out.println(beanDefinitionName + "->"+ beansWithAnnotation.get(beanDefinitionName).getClass().getSimpleName());
-		}
+//		ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(CodeConfig.class);
+//		Map<String, Object> beansWithAnnotation = context.getBeansWithAnnotation(Entity.class);
+//		for (String beanDefinitionName : beansWithAnnotation.keySet()) {
+//			Object bean = context.getBean(beanDefinitionName);
+//			System.out.println(beanDefinitionName + "->"+ beansWithAnnotation.get(beanDefinitionName).getClass().getSimpleName());
+//		}
 	}
 
 }
