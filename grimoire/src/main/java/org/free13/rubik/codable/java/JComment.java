@@ -65,7 +65,7 @@ public class JComment extends AbsJCode {
         }
         String[] comments = comment.split(WRAP.simpleName());
         if (commentType == CommentType.BLOCK) {
-            sb.append(JKeyword.COMMENT_JAVADOC_START.keyword());
+            sb.append(JKeyword.COMMENT_JAVADOC_START.keyword()).append(WRAP.keyword());
             for (String comment : comments) {
                 sb.append(JKeyword.COMMENT_BLOCK_LINE.keyword());
                 sb.append(comment);
@@ -73,7 +73,7 @@ public class JComment extends AbsJCode {
             }
             sb.append(JKeyword.COMMENT_JAVADOC_END.keyword());
         } else if (commentType == CommentType.JAVADOC) {
-            sb.append(JKeyword.COMMENT_BLOCK_START.keyword());
+            sb.append(JKeyword.COMMENT_BLOCK_START.keyword()).append(WRAP.keyword());
             for (String comment : comments) {
                 sb.append(JKeyword.COMMENT_BLOCK_LINE.keyword());
                 sb.append(comment);

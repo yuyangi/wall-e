@@ -16,7 +16,6 @@ import static org.free13.rubik.codable.java.JKeyword.*;
  * @author free13
  * Copyright (c) 2024.
  */
-@SuppressWarnings("unused")
 public class JClass extends AbsJCode {
 
     private JLine packages;
@@ -26,6 +25,7 @@ public class JClass extends AbsJCode {
     private List<JKeyword> modifiers;
     private JConstant className;
     private JComment comment;
+    private List<JLine> annotations;
 
     private JClass(Builder builder) {
         this.packages = builder.packages;
@@ -35,6 +35,7 @@ public class JClass extends AbsJCode {
         this.modifiers = builder.modifiers;
         this.className = builder.className;
         this.comment = builder.comment;
+        this.annotations = builder.annotations;
     }
 
     // builder模式
@@ -46,6 +47,7 @@ public class JClass extends AbsJCode {
         private List<JKeyword> modifiers;
         private JConstant className;
         private JComment comment;
+        private List<JLine> annotations;
 
         public Builder packages(JLine packages) {
             this.packages = packages;
@@ -132,6 +134,11 @@ public class JClass extends AbsJCode {
             return this;
         }
 
+        public Builder annotations(List<JLine> annotations) {
+            this.annotations = annotations;
+            return this;
+        }
+
         public JClass build() {
             return new JClass(this);
         }
@@ -199,39 +206,35 @@ public class JClass extends AbsJCode {
 
     @Override
     public String toCode(String... params) {
-        StringBuilder sb = new StringBuilder();
-        if (packages != null) {
-            sb.append(packages.toCode(params));
-        }
-        if (imports != null) {
-            imports.forEach(imp -> sb.append(imp.toCode(params)));
-        }
-        if (comment != null) {
-            sb.append(comment.toCode(params));
-        }
-        if (modifiers != null) {
-            modifiers.forEach(m -> sb.append(m.toCode(params)));
-        }
         if (className == null) {
             throw new RuntimeException("对象名称不能为空！");
         }
-        sb.append(className.toCode(params));
 
-        JBlock.Builder classBody = JBlock.builder();
-        JMultiLine.Builder bodyContent =  JMultiLine.builder();
+        JMultiLine.Builder builder = JMultiLine.builder();
+        if (packages != null) {
+            builder.content(JLine.builder().separator(SPACE.keyword()).factor(JKeyword.PACKAGE_).factor(packages).factor(SEMICOLONS).build());
+        }
+        if (imports != null) {
+            builder.contents(imports);
+        }
+        if (comment != null) {
+            builder.content(comment);
+        }
+        JLine.Builder classDef = JLine.builder().separator(SPACE.keyword());
+        if (modifiers != null) {
+            builder.content(classDef.factors(modifiers).factor(CLASS).factor(className).build());
+        }
+
+        builder.content(LEFT_BRACKETS);
+
         if (properties != null) {
-            JMultiLine.Builder propLine = JMultiLine.builder();
-            properties.forEach(propLine::content);
-            bodyContent.content(propLine.build());
+            builder.contents(properties);
         }
         if (methods != null) {
-            JMultiLine.Builder methodLine = JMultiLine.builder();
-            methods.forEach(methodLine::content);
-            bodyContent.content(methodLine.build());
+            builder.contents(methods);
         }
-        classBody.body(bodyContent.build());
-        sb.append(classBody.build().toCode(params));
-        return sb.toString();
+        builder.content(RIGHT_BRACKETS);
+        return builder.build().toCode(params);
     }
 
     @Override

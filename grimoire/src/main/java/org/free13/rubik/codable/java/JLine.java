@@ -4,6 +4,7 @@ import org.free13.rubik.codable.java.enums.CodeState;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -14,6 +15,7 @@ public class JLine extends AbsJCode {
 
     private List<JCode> factors;
     private String name;
+    private String separator = "";
 
     @Override
     public String name() {
@@ -28,13 +30,16 @@ public class JLine extends AbsJCode {
     public static class Builder {
         private List<JCode> factors = new ArrayList<>();
         private String name;
+        private String separator = "";
 
-        public Builder factors(List<JCode> factors) {
-            if (this.factors != null) {
-                this.factors.addAll(factors);
-            } else {
-                this.factors = factors;
+        public Builder factors(List<? extends JCode> factors) {
+            if (factors == null) {
+                return this;
             }
+            if (this.factors == null) {
+                this.factors = new ArrayList<>();
+            }
+            this.factors.addAll(factors);
             return this;
         }
 
@@ -48,6 +53,11 @@ public class JLine extends AbsJCode {
             return this;
         }
 
+        public Builder separator(String separator) {
+            this.separator = separator;
+            return this;
+        }
+
         public JLine build() {
             return new JLine(this);
         }
@@ -56,6 +66,7 @@ public class JLine extends AbsJCode {
     private JLine(Builder builder) {
         this.factors = builder.factors;
         this.name = builder.name;
+        this.separator = builder.separator;
     }
 
     public JLine() {
@@ -81,7 +92,7 @@ public class JLine extends AbsJCode {
 
     @Override
     public String toCode(String... params) {
-        return factors.stream().map(JCode::toCode).collect(Collectors.joining(JKeyword.SPACE.keyword()));
+        return factors.stream().map(JCode::toCode).collect(Collectors.joining(separator));
     }
 
     @Override
@@ -91,5 +102,30 @@ public class JLine extends AbsJCode {
 
     public List<JCode> getFactors() {
         return factors;
+    }
+
+    public String getSeparator() {
+        return separator;
+    }
+
+    public void setSeparator(String separator) {
+        this.separator = separator;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass())  {
+            return false;
+        }
+        JLine jLine = (JLine) object;
+        return Objects.equals(factors, jLine.factors) && Objects.equals(name, jLine.name) && Objects.equals(separator, jLine.separator);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(factors, name, separator);
     }
 }

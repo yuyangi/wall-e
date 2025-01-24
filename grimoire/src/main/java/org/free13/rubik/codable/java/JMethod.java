@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  */
 public class JMethod extends AbsJCode {
 
-    private List<JConstant> modifiers;
+    private List<JKeyword> modifiers;
 
     private JConstant methodName;
 
@@ -24,6 +24,8 @@ public class JMethod extends AbsJCode {
 
     private JBlock body;
 
+    private List<JLine> annotations;
+
     // builder模式
     public static class Builder {
         private JConstant methodName;
@@ -31,20 +33,21 @@ public class JMethod extends AbsJCode {
         private List<JDefine> parameters;
         private JComment comment;
         private JBlock body;
-        private List<JConstant> modifiers;
+        private List<JKeyword> modifiers;
+        private List<JLine> annotations;
 
-        public Builder modifiers(List<JConstant> modifiers) {
+        public Builder modifiers(List<JKeyword> modifiers) {
             this.modifiers = modifiers;
             return this;
         }
 
-        public Builder modifier(JConstant modifier) {
+        public Builder modifier(JKeyword modifier) {
             this.modifiers.add(modifier);
             return this;
         }
 
         public Builder modifiers(String[] modifiers) {
-            this.modifiers = Arrays.stream(modifiers).map(JConstant::of).collect(Collectors.toList());
+            this.modifiers = Arrays.stream(modifiers).map(JKeyword::of).collect(Collectors.toList());
             return this;
         }
 
@@ -83,6 +86,10 @@ public class JMethod extends AbsJCode {
             return this;
         }
 
+        public Builder annotations(List<JLine> annotations) {
+            this.annotations = annotations;
+            return this;
+        }
         public JMethod build() {
             return new JMethod(this);
         }
@@ -99,6 +106,7 @@ public class JMethod extends AbsJCode {
         this.comment = builder.comment;
         this.body = builder.body;
         this.modifiers = builder.modifiers;
+        this.annotations = builder.annotations;
     }
 
     @Override
@@ -113,7 +121,18 @@ public class JMethod extends AbsJCode {
 
     @Override
     public String toCode(String... params) {
-        return "";
+        JMultiLine.Builder builder = JMultiLine.builder();
+        if (returnType == null) {
+            returnType = JConstant.of("void");
+        }
+        JLine method = JLine.builder().separator(JKeyword.SPACE.keyword()).factors(modifiers).factor(returnType).factor(methodName).factor(JKeyword.LEFT_PARENTHESES)
+                .factors(parameters).factor(JKeyword.RIGHT_PARENTHESES).build();
+        if (annotations != null) {
+            builder.contents(annotations);
+        }
+        builder.content(method);
+        builder.content(body);
+        return builder.build().toCode(params);
     }
 
     @Override
@@ -158,11 +177,11 @@ public class JMethod extends AbsJCode {
         this.body = body;
     }
 
-    public List<JConstant> getModifiers() {
+    public List<JKeyword> getModifiers() {
         return modifiers;
     }
 
-    public void setModifiers(List<JConstant> modifiers) {
+    public void setModifiers(List<JKeyword> modifiers) {
         this.modifiers = modifiers;
     }
 

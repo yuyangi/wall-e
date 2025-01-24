@@ -3,6 +3,8 @@ package org.free13.rubik.codable.java;
 
 import org.free13.rubik.codable.java.enums.CodeState;
 
+import java.util.Objects;
+
 /**
  * @author free13
  * Copyright (c) 2024.
@@ -37,5 +39,18 @@ public class JConstant extends AbsJCode {
 
     public static JConstant of(String value) {
         return new JConstant(value);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        JConstant jConstant = (JConstant) object;
+        return Objects.equals(value, jConstant.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(value);
     }
 }

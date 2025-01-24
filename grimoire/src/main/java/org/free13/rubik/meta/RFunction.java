@@ -17,4 +17,5 @@ public @interface RFunction {
 
     String code() default "";
 
+    String desc() default "";
 }

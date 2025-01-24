@@ -6,6 +6,8 @@ import org.free13.rubik.meta.RFunction;
 
 import java.util.List;
 
+import static org.free13.rubik.codable.java.JKeyword.SPACE;
+
 /**
  * @author free13
  * Copyright (c) 2024.
@@ -18,6 +20,7 @@ public class JDefine extends AbsJCode {
     private JCode operator;
     private JCode defaultValue;
     private Scope scope;
+    private List<JLine> annotations;
     public enum Scope {
         PARAM, VAR, PROPERTY
     }
@@ -26,13 +29,14 @@ public class JDefine extends AbsJCode {
 
     }
 
-    private JDefine(List<JCode> modifiers, JCode type, JCode name, JCode operator, JCode defaultValue, Scope scope) {
+    private JDefine(List<JCode> modifiers, JCode type, JCode name, JCode operator, JCode defaultValue, Scope scope, List<JLine> annotations) {
         this.modifiers = modifiers;
         this.type = type;
         this.name = name;
         this.defaultValue = defaultValue;
         this.scope = scope;
         this.operator = operator;
+        this.annotations = annotations;
     }
 
     public static class Builder {
@@ -42,6 +46,7 @@ public class JDefine extends AbsJCode {
         private JCode defaultValue;
         private Scope scope;
         private JCode operator;
+        private List<JLine> annotations;
 
         public Builder modifiers(List<JCode> modifiers) {
             this.modifiers = modifiers;
@@ -88,8 +93,13 @@ public class JDefine extends AbsJCode {
             return this;
         }
 
+        public Builder annotations(List<JLine> annotations) {
+            this.annotations = annotations;
+            return this;
+        }
+
         public JDefine build() {
-            return new JDefine(modifiers, type, name, operator, defaultValue, scope);
+            return new JDefine(modifiers, type, name, operator, defaultValue, scope, annotations);
         }
 
     }
@@ -97,17 +107,16 @@ public class JDefine extends AbsJCode {
     @RFunction(name = " ")
     @Override
     public String toCode(String... params) {
+        JLine.Builder builder = JLine.builder().separator(SPACE.keyword());
         if (scope == Scope.PARAM) {
-            return JLine.builder().factor(type).factor(name).build().toCode(params);
+            builder.factor(type).factor(name);
         } else if (scope == Scope.VAR) {
-            JLine.Builder builder = JLine.builder().factor(type).factor(name);
+            builder.factor(type).factor(name);
             if (defaultValue != null) {
                 builder.factor(Operator.ASSIGN).factor(defaultValue);
             }
             builder.factor(JKeyword.SEMICOLONS);
-            return builder.build().toCode(params);
         } else if (scope == Scope.PROPERTY) {
-            JLine.Builder builder = JLine.builder();
             if (modifiers != null) {
                 builder.factors(modifiers);
             }
@@ -116,9 +125,15 @@ public class JDefine extends AbsJCode {
                 builder.factor(Operator.ASSIGN).factor(defaultValue);
             }
             builder.factor(JKeyword.SEMICOLONS);
-            return builder.build().toCode(params);
         }
-        return "";
+        if (annotations != null) {
+            JMultiLine.Builder builder1 = JMultiLine.builder();
+            for (JLine annotation : annotations) {
+                builder1.content(annotation);
+            }
+            return builder1.content(builder.build()).build().toCode();
+        }
+        return builder.build().toCode();
     }
 
     // builder模式

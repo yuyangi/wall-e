@@ -24,7 +24,7 @@ public @interface RField {
 
     boolean unique() default false; // 是否唯一
 
-    String comment() default ""; // 字段注释
+    String desc() default ""; // 字段注释
 
     boolean autoIncrement() default false;
 

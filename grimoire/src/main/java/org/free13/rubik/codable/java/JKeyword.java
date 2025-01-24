@@ -210,6 +210,9 @@ public enum JKeyword implements JCode {
     // 单引号
     @RField(name = "单引号", type = "grammar")
     SINGLE_QUOTES("'"),
+    // 双引号
+    @RField(name = "双引号", type = "grammar")
+    QUOTES("\""),
     @RField(name = "空格", type = "grammar")
     SPACE(" "),
     @RField(name = "缩进", type = "grammar")
@@ -227,7 +230,7 @@ public enum JKeyword implements JCode {
     @RField(name = "JavaDoc注释块开始", type = "grammar")
     COMMENT_JAVADOC_START("/**"),
     @RField(name = "JavaDoc注释块结束", type = "grammar")
-    COMMENT_JAVADOC_END("*/"),
+    COMMENT_JAVADOC_END(" */"),
 
     // 特殊符号
     @RField(name = "下划线", type = "grammar")

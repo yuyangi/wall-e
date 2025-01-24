@@ -56,6 +56,7 @@ public class JMultiLine extends AbsJCode {
     public static class Builder {
         private List<JCode> lines = new ArrayList<>();
         private String name;
+        private JCode parent;
 
         public Builder() {
         }
@@ -65,7 +66,7 @@ public class JMultiLine extends AbsJCode {
             return this;
         }
 
-        public Builder contents(List<JCode> contents) {
+        public Builder contents(List<? extends JCode> contents) {
             this.lines.addAll(contents);
             return this;
         }
@@ -75,10 +76,16 @@ public class JMultiLine extends AbsJCode {
             return this;
         }
 
+        public Builder parent(JCode parent) {
+            this.parent = parent;
+            return this;
+        }
+
         public JMultiLine build() {
             JMultiLine jMultiLine = new JMultiLine();
             jMultiLine.setLines(lines);
             jMultiLine.setName(name);
+            jMultiLine.setParent(parent);
             return jMultiLine;
         }
     }
