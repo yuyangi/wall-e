@@ -1,5 +1,6 @@
 package org.free13.rubik;
 
+import org.free13.rubik.codable.CodaResult;
 import org.free13.rubik.codable.Codability;
 import org.free13.rubik.compiler.Compiler;
 import org.free13.rubik.executor.Executor;
@@ -15,8 +16,8 @@ public class Rubik implements Codability, Executor, Compiler {
     private Compiler compiler;
 
     @Override
-    public String programming(String requirement) {
-        return coder.programming(requirement);
+    public CodaResult programming(String packages, String name, String requirement) {
+        return coder.programming(packages, name,requirement);
     }
 
     @Override
@@ -27,11 +28,6 @@ public class Rubik implements Codability, Executor, Compiler {
     @Override
     public void execute(String code) {
         executor.execute(code);
-    }
-
-    @Override
-    public String format(String code) {
-        return coder.format(code);
     }
 
     public Codability getCoder() {

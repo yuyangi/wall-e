@@ -1,16 +1,28 @@
 package org.free13;
 
+import org.free13.rubik.LittleJavaCoder;
+import org.free13.rubik.RuntimeCompiler;
+import org.free13.rubik.codable.CodaResult;
+import org.free13.rubik.codable.Codability;
+import org.free13.rubik.compiler.Compiler;
+import org.free13.rubik.llm.LLMAdapter;
+import org.free13.rubik.llm.TongyiAdapter;
 import org.free13.rubik.utilities.NamingUtils;
 
 import java.math.BigInteger;
 
 public class Main {
-    public static void main(String[] args) {
-        // 测试
-        System.out.println(convertToFraction("0.5"));  // 应输出 (1, 2)
-        System.out.println(convertToFraction("2.25")); // 应输出 (9, 4)
-        System.out.println(convertToFraction("-0.75"));// 应输出 (-3, 4)
-        System.out.println(convertToFraction("3.14159265358979323846"));
+    public static void main(String[] args) throws Exception {
+        LLMAdapter llm =  new TongyiAdapter("sk-082cc38b3aee4ca3922e8a0e5d0da995", "qwen-plus", "你是一个经验符丰富的架构师，你将帮助用户实现各种管理系统的设计和实现。你只需要输出用户想要的信息，不用输出多余的内容，例如我说输出字段和字段类型，那就输出一行文字，包含字段，类型并用空格隔开，其他的什么都不输出。");
+        Codability coder = new LittleJavaCoder();
+        Compiler compiler = RuntimeCompiler.getInstance();
+        String answer = llm.answer("设计一个crm的线索对象，包含字段英文编码，中文名称，数据类型；生成数据类型时增加java对象的全路径类名");
+
+        CodaResult customer = coder.programming("org.free13.rubik.demo", "Customer", answer);
+        System.out.println("-----------------------------------------------------");
+        System.out.println(customer.getSource());
+        System.out.println("-----------------------------------------------------");
+        compiler.compile("org.free13.rubik.demo.Customer", customer.getSource());
     }
 
 

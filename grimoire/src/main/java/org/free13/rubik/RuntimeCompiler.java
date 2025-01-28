@@ -3,6 +3,7 @@ package org.free13.rubik;
 import net.openhft.compiler.CachedCompiler;
 import net.openhft.compiler.CompilerUtils;
 import org.free13.rubik.compiler.Compiler;
+import org.free13.rubik.meta.RAction;
 import org.free13.rubik.meta.RDesc;
 import org.free13.rubik.utilities.NamingUtils;
 
@@ -42,6 +43,7 @@ public class RuntimeCompiler implements Compiler {
         return compiler;
     }
 
+    @RAction(name = "编译java代码")
     @Override
     public Class<?>[] compile(String name, String sourceCode) {
         String className = NamingUtils.toClassName(name);

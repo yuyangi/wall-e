@@ -6,8 +6,6 @@ package org.free13.rubik.codable;
  */
 public interface Codability {
 
-    String programming(String requirement);
-
-    String format(String source);
+    CodaResult programming(String packages, String name, String requirement);
 
 }

@@ -6,6 +6,7 @@ import com.google.common.collect.Sets;
 import com.google.googlejavaformat.java.Formatter;
 import com.google.googlejavaformat.java.FormatterException;
 import com.google.googlejavaformat.java.JavaFormatterOptions;
+import org.free13.rubik.codable.CodaResult;
 import org.free13.rubik.codable.Codability;
 import org.free13.rubik.codable.java.*;
 import org.free13.rubik.meta.RField;
@@ -18,18 +19,21 @@ import static org.free13.rubik.codable.java.JDefine.Scope.PARAM;
 import static org.free13.rubik.codable.java.JDefine.Scope.PROPERTY;
 
 /**
- * 简单代码生成器
+ *
  * @author free13
- * Copyright (c) 2024 free13.
+ * Copyright (c) 2024-2025.
  */
 public class LittleJavaCoder implements Codability {
 
     @Override
-    public String programming(String requirement) {
-        return "";
+    public CodaResult programming(String packages, String name, String requirement) {
+        CodaResult result = new CodaResult();
+        result.setName(name);
+        // TODO
+        result.setSource(entity(packages, name, name, null, requirement));
+        return result;
     }
 
-    @Override
     public String format(String source) {
         JavaFormatterOptions options = JavaFormatterOptions.builder().style(JavaFormatterOptions.Style.GOOGLE).build();
         com.google.googlejavaformat.java.Formatter formatter = new Formatter(options);

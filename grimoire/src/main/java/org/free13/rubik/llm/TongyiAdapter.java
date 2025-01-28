@@ -34,6 +34,7 @@ public class TongyiAdapter implements LLMAdapter {
     public TongyiAdapter(String apiKey, String modelName, String sysPrompt) {
         this.apiKey = apiKey;
         this.modelName = modelName;
+        this.init(sysPrompt);
     }
 
     private void init(String sysPrompt) {
